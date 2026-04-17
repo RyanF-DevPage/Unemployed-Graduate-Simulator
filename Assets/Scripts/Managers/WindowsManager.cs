@@ -3,8 +3,15 @@ using UnityEngine.UI;
 
 public class WindowsManager : MonoBehaviour
 {
-    public void SetPosition(GameObject panel,Vector3 newPosition)
+    public void OpenWindow(GameObject window)
     {
-
+        window.SetActive(true);
     }
+    
+    public void CloseWindow(GameObject window)
+    {
+        window.SetActive(false);
+    }
+
+
 }
