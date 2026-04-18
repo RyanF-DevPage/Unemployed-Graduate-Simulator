@@ -20,7 +20,7 @@ namespace Simulator_Game
             get => normalizedValue * maxValue;
             set
             {
-                normalizedValue = Mathf.Clamp01(value);
+                normalizedValue = Mathf.Clamp01(value / maxValue);
                 OnStatValueChanged?.Invoke(normalizedValue);
             }
         }
@@ -33,7 +33,7 @@ namespace Simulator_Game
         public void ResetStat()
         {
             normalizedValue = 1f;
-            CurrentValue = maxValue;
+            OnStatValueChanged?.Invoke(normalizedValue);
         }
 
     }
