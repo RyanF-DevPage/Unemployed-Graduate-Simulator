@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "mcp__7eeacfc6-0b70-4fba-b57c-4e7474f36db4__notion-search",
+      "mcp__unity-mcp__Unity_RunCommand",
+      "mcp__7eeacfc6-0b70-4fba-b57c-4e7474f36db4__notion-fetch"
+    ]
+  }
+}

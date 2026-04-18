@@ -2320,6 +2320,7 @@ GameObject:
   - component: {fileID: 1446908284}
   - component: {fileID: 1446908283}
   - component: {fileID: 1446908285}
+  - component: {fileID: 1446908286}
   m_Layer: 5
   m_Name: TaskPanel
   m_TagString: Untagged
@@ -2407,6 +2408,18 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &1446908286
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1446908281}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6b6703ce4ae64ce4b893a9b93027f320, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Simulator_Game.AnimatorController
 --- !u!1 &1467111589
 GameObject:
   m_ObjectHideFlags: 0
@@ -2442,8 +2455,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0.5}
   m_AnchorMax: {x: 0, y: 0.5}
-  m_AnchoredPosition: {x: -15, y: 0}
-  m_SizeDelta: {x: 20, y: 100}
+  m_AnchoredPosition: {x: -20, y: 0}
+  m_SizeDelta: {x: 30, y: 100}
   m_Pivot: {x: 0, y: 0.5}
 --- !u!114 &1467111591
 MonoBehaviour:
@@ -2489,16 +2502,16 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1446908281}
-        m_TargetAssemblyTypeName: 
-        m_MethodName: 
-        m_Mode: 1
+      - m_Target: {fileID: 1446908286}
+        m_TargetAssemblyTypeName: Simulator_Game.AnimatorController, Assembly-CSharp
+        m_MethodName: ToggleAnimation
+        m_Mode: 5
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: 
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
-          m_StringArgument: 
+          m_StringArgument: Toggle
           m_BoolArgument: 0
         m_CallState: 2
 --- !u!114 &1467111592
@@ -3022,6 +3035,37 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1663101603}
   m_CullTransparentMesh: 1
+--- !u!1 &1676771938
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1676771939}
+  m_Layer: 0
+  m_Name: Managers
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1676771939
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1676771938}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1859595416
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3714,3 +3758,4 @@ SceneRoots:
   - {fileID: 459657366}
   - {fileID: 571544005}
   - {fileID: 224641731}
+  - {fileID: 1676771939}

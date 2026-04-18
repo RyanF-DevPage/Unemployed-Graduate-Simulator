@@ -1,16 +1,20 @@
 using UnityEngine;
 
-public class AnimatorController : MonoBehaviour
+namespace Simulator_Game
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    public class AnimatorController : MonoBehaviour
     {
-        
-    }
+        Animator animator;
 
-    // Update is called once per frame
-    void Update()
-    {
-        
+        // Start is called once before the first execution of Update after the MonoBehaviour is created
+        void Start()
+        {
+            animator = GetComponent<Animator>();
+        }
+
+        public void ToggleAnimation(string triggerName)
+        {
+            animator.SetTrigger(triggerName);
+        }
     }
 }
