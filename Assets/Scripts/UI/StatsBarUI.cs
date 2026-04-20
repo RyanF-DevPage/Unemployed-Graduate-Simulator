@@ -24,12 +24,17 @@ namespace Simulator_Game
             }
         }
 
+        private void OnDestroy()
+        {
+            if (playerStat != null)
+                playerStat.OnStatValueChanged.RemoveListener(UpdateBar);
+        }
+
         public void UpdateBar(float normalizedValue)
         {
             if (barImage != null)
             {
-                barImage.fillAmount = Mathf.Clamp01(normalizedValue); 
-                //Clamp might not be needed here, but used as a safety measure to ensure fillAmount stays between 0 and 1
+                barImage.fillAmount = Mathf.Clamp01(normalizedValue);
             }
             else
             {

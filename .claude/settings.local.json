@@ -6,7 +6,17 @@
       "mcp__7eeacfc6-0b70-4fba-b57c-4e7474f36db4__notion-fetch",
       "mcp__unity-mcp__Unity_ManageScript",
       "mcp__unity-mcp__Unity_GetConsoleLogs",
-      "mcp__unity-mcp__Unity_ManageScene"
+      "mcp__unity-mcp__Unity_ManageScene",
+      "mcp__unity-mcp__Unity_CreateScript",
+      "mcp__unity-mcp__Unity_ManageMenuItem",
+      "mcp__unity-mcp__Unity_ManageGameObject",
+      "mcp__unity-mcp__Unity_Camera_Capture",
+      "mcp__unity-mcp__Unity_DeleteScript",
+      "Bash(git.exe diff *)",
+      "Bash(export PATH=\"/c/Program Files/Git/cmd:/c/Program Files/Git/bin:$PATH\")",
+      "Bash(export PATH=\"/c/Program Files/Git/cmd:$PATH\")",
+      "Bash(git -C \"D:/Unity Projects/Unemployed Graduate\" log --oneline -5)",
+      "Bash(git -C \"D:/Unity Projects/Unemployed Graduate\" diff HEAD -- \"*.cs\")"
     ]
   }
 }

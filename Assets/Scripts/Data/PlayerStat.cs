@@ -27,11 +27,9 @@ namespace Simulator_Game
         
         public float NormalizedValue => normalizedValue;
 
-        /// <summary>
-        /// Reset the stat to its default state, which is full (normalized value of 1) and current value equal to max value.
-        /// </summary>
         public void ResetStat()
         {
+            if (normalizedValue == 1f) return;
             normalizedValue = 1f;
             OnStatValueChanged?.Invoke(normalizedValue);
         }
