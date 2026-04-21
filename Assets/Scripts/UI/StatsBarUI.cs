@@ -10,10 +10,35 @@ namespace Simulator_Game
         [SerializeField] private Image    barImage;
         [SerializeField] private StatType statType;
 
+        private bool _started;
+
+        // Start runs after all Awake() calls — PlayerStatsManager.Instance is guaranteed set.
+        private void Start()
+        {
+            _started = true;
+            Subscribe();
+        }
+
+        // OnEnable fires before Start on first enable, so skip until Start has run.
+        // On subsequent re-enables (after a disable), re-subscribe.
         private void OnEnable()
         {
+            if (_started) Subscribe();
+        }
+
+        private void OnDisable()
+        {
+            Unsubscribe();
+        }
+
+        private void Subscribe()
+        {
             var mgr = PlayerStatsManager.Instance;
-            if (mgr == null) return;
+            if (mgr == null)
+            {
+                Debug.LogWarning($"[StatsBarUI] PlayerStatsManager.Instance is null on '{gameObject.name}'");
+                return;
+            }
 
             switch (statType)
             {
@@ -23,10 +48,14 @@ namespace Simulator_Game
             }
         }
 
-        private void OnDisable()
+        private void Unsubscribe()
         {
             var mgr = PlayerStatsManager.Instance;
-            if (mgr == null) return;
+            if (mgr == null)
+            {
+                Debug.LogWarning($"[StatsBarUI] PlayerStatsManager.Instance is null on '{gameObject.name}'");
+                return;
+            }
 
             switch (statType)
             {
@@ -38,8 +67,13 @@ namespace Simulator_Game
 
         private void UpdateBar(float value)
         {
-            if (barImage != null)
-                barImage.fillAmount = Mathf.Clamp01(value / 100f);
+            if (barImage == null)
+            {
+                Debug.LogWarning($"[StatsBarUI] barImage is null on '{gameObject.name}'");
+                return;
+            }
+
+            barImage.fillAmount = Mathf.Clamp01(value / 100f);
         }
     }
 }

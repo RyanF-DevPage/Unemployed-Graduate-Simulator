@@ -224,7 +224,7 @@ GameObject:
   - component: {fileID: 8853142177713766457}
   - component: {fileID: 301803753116609578}
   m_Layer: 5
-  m_Name: Bacground
+  m_Name: Background
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -366,7 +366,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Simulator_Game.StatsBarUI
   barImage: {fileID: 4031714197744282052}
-  playerStat: {fileID: 0}
+  statType: 0
 --- !u!1 &4538706700102054820
 GameObject:
   m_ObjectHideFlags: 0

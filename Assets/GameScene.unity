@@ -1037,9 +1037,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Simulator_Game.PlayerStatsManager
   data: {fileID: 11400000, guid: 57d2858e9b632e340b0c74c0d15d1ad2, type: 2}
-  moodDepletionRate: -1
-  hungerDepletionRate: -1
-  healthCriticalDepletionRate: -2
+  moodDepletionRate: 1
+  hungerDepletionRate: 1
+  healthCriticalDepletionRate: 2
 --- !u!114 &489855762
 MonoBehaviour:
   m_ObjectHideFlags: 0
