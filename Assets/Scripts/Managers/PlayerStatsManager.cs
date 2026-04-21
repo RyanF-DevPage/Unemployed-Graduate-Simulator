@@ -1,24 +1,29 @@
+using System;
+using System.IO;
 using UnityEngine;
 
 namespace Simulator_Game
 {
-    public class PlayerStatsManager : MonoBehaviour, ITimeDependent, ISaveable
+    public class PlayerStatsManager : MonoBehaviour, ITimeDependent, ISaveable, ILevelable, IWallet
     {
-        [Header("Stat References")]
-        [SerializeField] private PlayerStat healthStat;
-        [SerializeField] private PlayerStat hungerStat;
-        [SerializeField] private PlayerStat moodStat;
+        [SerializeField] private PlayerData data;
 
         [Header("Depletion Rates (per game minute)")]
-        [SerializeField] private float moodDepletionRate = -1f;
-        [SerializeField] private float hungerDepletionRate = -1f;
-        [SerializeField] private float healthCriticalDepletionRate = -2f;
+        [SerializeField] private float moodDepletionRate           = 1f;
+        [SerializeField] private float hungerDepletionRate         = 1f;
+        [SerializeField] private float healthCriticalDepletionRate = 2f;
 
-        private const string SaveHealthKey = "Stat_Health";
-        private const string SaveHungerKey = "Stat_Hunger";
-        private const string SaveMoodKey   = "Stat_Mood";
+        private const string SavePath = "/playerdata.json";
 
-        #region Singleton
+        // ── Events ──────────────────────────────────────────────────────────
+        public event Action<float> OnHealthChanged;
+        public event Action<float> OnMoodChanged;
+        public event Action<float> OnHungerChanged;
+        public event Action<float> OnBalanceChanged;
+        public event Action<int>   OnLevelUp;
+        public event Action        OnGameOver;
+
+        // ── Singleton ────────────────────────────────────────────────────────
         public static PlayerStatsManager Instance { get; private set; }
 
         private void Awake()
@@ -31,10 +36,7 @@ namespace Simulator_Game
             Instance = this;
             DontDestroyOnLoad(gameObject);
         }
-        #endregion
 
-        // Start() is guaranteed to run after ALL Awake() calls across all objects,
-        // so GameTimeManager.Instance is always set by this point.
         private void Start()
         {
             GameTimeManager.Instance.OnTimeChanged += OnTimeUpdated;
@@ -46,50 +48,117 @@ namespace Simulator_Game
                 GameTimeManager.Instance.OnTimeChanged -= OnTimeUpdated;
         }
 
-        // Called every in-game minute by GameTimeManager.OnTimeChanged
+        // ── ITimeDependent ───────────────────────────────────────────────────
         public void OnTimeUpdated(int day, int hour, int minute)
         {
-            if (hungerStat != null) hungerStat.CurrentValue += hungerDepletionRate;
-            if (moodStat != null)   moodStat.CurrentValue   += moodDepletionRate;
+            SetHunger(data.hunger - hungerDepletionRate);
+            SetMood(data.mood - moodDepletionRate);
 
-            // Health depletes only when Hunger or Mood is critical (< 25%)
-            if (healthStat != null)
+            bool isCritical = data.hunger < 25f || data.mood < 25f;
+            if (isCritical)
+                SetHealth(data.health - healthCriticalDepletionRate);
+
+            if (data.health <= 0f || data.hunger <= 0f || data.mood <= 0f)
+                OnGameOver?.Invoke();
+        }
+
+        // ── Vitals ───────────────────────────────────────────────────────────
+        public void ModifyHealth(float delta) => SetHealth(data.health + delta);
+        public void SetHealth(float value)
+        {
+            data.health = Mathf.Clamp(value, 0f, 100f);
+            OnHealthChanged?.Invoke(data.health);
+        }
+
+        public void ModifyMood(float delta) => SetMood(data.mood + delta);
+        public void SetMood(float value)
+        {
+            data.mood = Mathf.Clamp(value, 0f, 100f);
+            OnMoodChanged?.Invoke(data.mood);
+        }
+
+        public void ModifyHunger(float delta) => SetHunger(data.hunger + delta);
+        public void SetHunger(float value)
+        {
+            data.hunger = Mathf.Clamp(value, 0f, 100f);
+            OnHungerChanged?.Invoke(data.hunger);
+        }
+
+        // ── ILevelable ───────────────────────────────────────────────────────
+        public int   Level         => data.level;
+        public float CurrentXP     => data.currentXP;
+        public float XPToNextLevel => data.xpToNextLevel;
+
+        public void AddXP(float amount)
+        {
+            data.currentXP += amount;
+            while (data.currentXP >= data.xpToNextLevel)
             {
-                bool isCritical = (hungerStat != null && hungerStat.NormalizedValue < 0.25f)
-                               || (moodStat   != null && moodStat.NormalizedValue   < 0.25f);
-
-                if (isCritical)
-                    healthStat.CurrentValue += healthCriticalDepletionRate;
+                data.currentXP    -= data.xpToNextLevel;
+                data.level        += 1;
+                data.skillPoints  += 1;
+                data.xpToNextLevel = 100f * Mathf.Pow(1.25f, data.level - 1);
+                OnLevelUp?.Invoke(data.level);
             }
         }
 
-        #region ISaveable
+        public void SpendSkillPoint()
+        {
+            if (data.skillPoints > 0)
+                data.skillPoints--;
+        }
+
+        // ── IWallet ──────────────────────────────────────────────────────────
+        public float Balance => data.walletBalance;
+
+        public void AddFunds(float amount)
+        {
+            data.walletBalance = Mathf.Max(0f, data.walletBalance + amount);
+            OnBalanceChanged?.Invoke(data.walletBalance);
+        }
+
+        public bool TrySpend(float amount)
+        {
+            if (data.walletBalance < amount) return false;
+            data.walletBalance -= amount;
+            OnBalanceChanged?.Invoke(data.walletBalance);
+            return true;
+        }
+
+        // ── Read-only accessors ──────────────────────────────────────────────
+        public float Health      => data.health;
+        public float Mood        => data.mood;
+        public float Hunger      => data.hunger;
+        public int   SkillPoints => data.skillPoints;
+
+        // ── Reset ────────────────────────────────────────────────────────────
+        public void ResetAllStats()
+        {
+            data.ResetToDefaults();
+            OnHealthChanged?.Invoke(data.health);
+            OnMoodChanged?.Invoke(data.mood);
+            OnHungerChanged?.Invoke(data.hunger);
+            OnBalanceChanged?.Invoke(data.walletBalance);
+        }
+
+        // ── ISaveable ────────────────────────────────────────────────────────
         public void Save()
         {
-            if (healthStat != null) PlayerPrefs.SetFloat(SaveHealthKey, healthStat.NormalizedValue);
-            if (hungerStat != null) PlayerPrefs.SetFloat(SaveHungerKey, hungerStat.NormalizedValue);
-            if (moodStat   != null) PlayerPrefs.SetFloat(SaveMoodKey,   moodStat.NormalizedValue);
-            PlayerPrefs.Save();
+            File.WriteAllText(Application.persistentDataPath + SavePath, JsonUtility.ToJson(data));
         }
 
         public void Load()
         {
-            if (healthStat != null && PlayerPrefs.HasKey(SaveHealthKey))
-                healthStat.CurrentValue = PlayerPrefs.GetFloat(SaveHealthKey) * healthStat.maxValue;
+            string path = Application.persistentDataPath + SavePath;
+            if (File.Exists(path))
+                JsonUtility.FromJsonOverwrite(File.ReadAllText(path), data);
+            else
+                data.ResetToDefaults();
 
-            if (hungerStat != null && PlayerPrefs.HasKey(SaveHungerKey))
-                hungerStat.CurrentValue = PlayerPrefs.GetFloat(SaveHungerKey) * hungerStat.maxValue;
-
-            if (moodStat != null && PlayerPrefs.HasKey(SaveMoodKey))
-                moodStat.CurrentValue = PlayerPrefs.GetFloat(SaveMoodKey) * moodStat.maxValue;
-        }
-        #endregion
-
-        public void ResetAllStats()
-        {
-            healthStat.ResetStat();
-            hungerStat.ResetStat();
-            moodStat.ResetStat();
+            OnHealthChanged?.Invoke(data.health);
+            OnMoodChanged?.Invoke(data.mood);
+            OnHungerChanged?.Invoke(data.hunger);
+            OnBalanceChanged?.Invoke(data.walletBalance);
         }
     }
 }

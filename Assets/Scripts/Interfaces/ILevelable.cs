@@ -9,11 +9,11 @@ namespace Simulator_Game
     /// </summary>
     public interface ILevelable
     {
-        int Level { get; }
-        int CurrentXP { get; }
-        int XPToNextLevel { get; }
+        int   Level         { get; }
+        float CurrentXP     { get; }
+        float XPToNextLevel { get; }
 
-        void AddXP(int amount);
+        void AddXP(float amount);
 
         /// <summary>Fired with the new level when the player levels up.</summary>
         event Action<int> OnLevelUp;

@@ -6,8 +6,8 @@ namespace Simulator_Game
     /// </summary>
     public interface IStatAffector
     {
-        /// <summary>Apply the effect (buff or debuff) to the given stat.</summary>
-        void ApplyEffect(PlayerStat stat);
+        /// <summary>Apply the effect (buff or debuff) via the stats manager.</summary>
+        void ApplyEffect(PlayerStatsManager manager);
 
         /// <summary>Magnitude of the change — positive restores, negative depletes.</summary>
         float EffectAmount { get; }
