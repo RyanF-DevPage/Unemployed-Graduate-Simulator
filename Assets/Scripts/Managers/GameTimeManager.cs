@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Simulator_Game
 {
-    public class GameTimeManager : MonoBehaviour
+    public class GameTimeManager : MonoBehaviour, ISaveable
     {
         [SerializeField] private GameTime _gameTimeConfig;
 
@@ -64,13 +64,24 @@ namespace Simulator_Game
         public void Pause() => _isPaused = true;
         public void Resume() => _isPaused = false;
 
-        public void LoadGame()
+        /// <summary>Kept for backwards compatibility — delegates to Load().</summary>
+        public void LoadGame() => Load();
+
+        #region ISaveable
+        public void Save()
+        {
+            PlayerPrefs.SetFloat(SaveTimeKey, _totalMinute);
+            PlayerPrefs.Save();
+        }
+
+        public void Load()
         {
             _totalMinute = PlayerPrefs.HasKey(SaveTimeKey)
                 ? PlayerPrefs.GetFloat(SaveTimeKey)
                 : _gameTimeConfig.DefaultStartInMinutes;
             EventNotifier();
         }
+        #endregion
 
         private int _lastNotifiedMinute = -1;
 
