@@ -24,12 +24,14 @@ namespace Simulator_Game
 
         public void StartNewGame()
         {
-            
+            PlayerStatsManager.Instance.ResetAllStats();
+            GameTimeManager.Instance.StartNewGame();
         }
 
         public void LoadGame()
         {
-
+            PlayerStatsManager.Instance.Load();
+            GameTimeManager.Instance.Load();
         }
 
         public void LoadOpeningCutScene()

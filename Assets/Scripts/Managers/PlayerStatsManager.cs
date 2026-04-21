@@ -33,13 +33,14 @@ namespace Simulator_Game
         }
         #endregion
 
-        private void OnEnable()
+        // Start() is guaranteed to run after ALL Awake() calls across all objects,
+        // so GameTimeManager.Instance is always set by this point.
+        private void Start()
         {
-            if (GameTimeManager.Instance != null)
-                GameTimeManager.Instance.OnTimeChanged += OnTimeUpdated;
+            GameTimeManager.Instance.OnTimeChanged += OnTimeUpdated;
         }
 
-        private void OnDisable()
+        private void OnDestroy()
         {
             if (GameTimeManager.Instance != null)
                 GameTimeManager.Instance.OnTimeChanged -= OnTimeUpdated;
@@ -83,5 +84,12 @@ namespace Simulator_Game
                 moodStat.CurrentValue = PlayerPrefs.GetFloat(SaveMoodKey) * moodStat.maxValue;
         }
         #endregion
+
+        public void ResetAllStats()
+        {
+            healthStat.ResetStat();
+            hungerStat.ResetStat();
+            moodStat.ResetStat();
+        }
     }
 }

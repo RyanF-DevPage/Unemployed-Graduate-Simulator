@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Mood
   m_EditorClassIdentifier: Assembly-CSharp::Simulator_Game.PlayerStat
   statName: Mood
-  maxValue: 5
+  maxValue: 100
   normalizedValue: 1
   OnStatValueChanged:
     m_PersistentCalls:
