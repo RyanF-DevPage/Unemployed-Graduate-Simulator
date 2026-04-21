@@ -32,6 +32,19 @@ namespace Simulator_Game
 
         }
 
+        public void LoadOpeningCutScene()
+        {
 
+        }
+
+        public void OnPlayerWin()
+        {
+
+        }
+        
+        public void OnPlayerLose()
+        {
+
+        }
     }
 }

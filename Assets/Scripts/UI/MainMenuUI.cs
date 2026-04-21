@@ -13,7 +13,7 @@ namespace Simulator_Game
 
         public void OnContinueClicked()
         {
-            GameTimeManager.Instance.LoadGame();
+            GameTimeManager.Instance.Load();
             SceneManager.LoadScene("Scenes/GameScene");
         }
     }

@@ -12,9 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7328bd529d57d834fb27d94826f6b316, type: 3}
   m_Name: GameTime
   m_EditorClassIdentifier: Assembly-CSharp::Simulator_Game.GameTime
-  defaultStartMonth: 0
   defaultStartDay: 1
-  defaultStartYear: 2026
-  defaultStartHour: 23
+  defaultStartHour: 9
   defaultStartMinute: 0
-  minutePerRealSecond: 5
+  minutePerRealSecond: 1

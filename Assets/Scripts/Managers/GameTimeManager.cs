@@ -64,8 +64,6 @@ namespace Simulator_Game
         public void Pause() => _isPaused = true;
         public void Resume() => _isPaused = false;
 
-        /// <summary>Kept for backwards compatibility — delegates to Load().</summary>
-        public void LoadGame() => Load();
 
         #region ISaveable
         public void Save()
