@@ -33,8 +33,8 @@ namespace Simulator_Game
 
         private void Subscribe()
         {
-            var mgr = PlayerStatsManager.Instance;
-            if (mgr == null)
+            var statsManager = PlayerStatsManager.Instance;
+            if (statsManager == null)
             {
                 Debug.LogWarning($"[StatsBarUI] PlayerStatsManager.Instance is null on '{gameObject.name}'");
                 return;
@@ -42,16 +42,16 @@ namespace Simulator_Game
 
             switch (statType)
             {
-                case StatType.Health: mgr.OnHealthChanged += UpdateBar; UpdateBar(mgr.Health); break;
-                case StatType.Mood:   mgr.OnMoodChanged   += UpdateBar; UpdateBar(mgr.Mood);   break;
-                case StatType.Hunger: mgr.OnHungerChanged += UpdateBar; UpdateBar(mgr.Hunger); break;
+                case StatType.Health: statsManager.OnHealthChanged += UpdateBar; UpdateBar(statsManager.Health); break;
+                case StatType.Mood:   statsManager.OnMoodChanged   += UpdateBar; UpdateBar(statsManager.Mood);   break;
+                case StatType.Hunger: statsManager.OnHungerChanged += UpdateBar; UpdateBar(statsManager.Hunger); break;
             }
         }
 
         private void Unsubscribe()
         {
-            var mgr = PlayerStatsManager.Instance;
-            if (mgr == null)
+            var statsManager = PlayerStatsManager.Instance;
+            if (statsManager == null)
             {
                 Debug.LogWarning($"[StatsBarUI] PlayerStatsManager.Instance is null on '{gameObject.name}'");
                 return;
@@ -59,9 +59,9 @@ namespace Simulator_Game
 
             switch (statType)
             {
-                case StatType.Health: mgr.OnHealthChanged -= UpdateBar; break;
-                case StatType.Mood:   mgr.OnMoodChanged   -= UpdateBar; break;
-                case StatType.Hunger: mgr.OnHungerChanged -= UpdateBar; break;
+                case StatType.Health: statsManager.OnHealthChanged -= UpdateBar; break;
+                case StatType.Mood:   statsManager.OnMoodChanged   -= UpdateBar; break;
+                case StatType.Hunger: statsManager.OnHungerChanged -= UpdateBar; break;
             }
         }
 
