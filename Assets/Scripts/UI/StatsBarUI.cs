@@ -3,43 +3,77 @@ using UnityEngine.UI;
 
 namespace Simulator_Game
 {
+    public enum StatType { Health, Mood, Hunger }
+
     public class StatsBarUI : MonoBehaviour
     {
-        [SerializeField] private Image barImage;
-        [SerializeField] private PlayerStat playerStat;
+        [SerializeField] private Image    barImage;
+        [SerializeField] private StatType statType;
 
+        private bool _started;
+
+        // Start runs after all Awake() calls — PlayerStatsManager.Instance is guaranteed set.
+        private void Start()
+        {
+            _started = true;
+            Subscribe();
+        }
+
+        // OnEnable fires before Start on first enable, so skip until Start has run.
+        // On subsequent re-enables (after a disable), re-subscribe.
         private void OnEnable()
         {
-            if (playerStat != null)
-            {
-                playerStat.OnStatValueChanged.AddListener(UpdateBar);
-            }
+            if (_started) Subscribe();
         }
 
         private void OnDisable()
         {
-            if (playerStat != null)
+            Unsubscribe();
+        }
+
+        private void Subscribe()
+        {
+            var mgr = PlayerStatsManager.Instance;
+            if (mgr == null)
             {
-                playerStat.OnStatValueChanged.RemoveListener(UpdateBar);
+                Debug.LogWarning($"[StatsBarUI] PlayerStatsManager.Instance is null on '{gameObject.name}'");
+                return;
+            }
+
+            switch (statType)
+            {
+                case StatType.Health: mgr.OnHealthChanged += UpdateBar; UpdateBar(mgr.Health); break;
+                case StatType.Mood:   mgr.OnMoodChanged   += UpdateBar; UpdateBar(mgr.Mood);   break;
+                case StatType.Hunger: mgr.OnHungerChanged += UpdateBar; UpdateBar(mgr.Hunger); break;
             }
         }
 
-        private void OnDestroy()
+        private void Unsubscribe()
         {
-            if (playerStat != null)
-                playerStat.OnStatValueChanged.RemoveListener(UpdateBar);
+            var mgr = PlayerStatsManager.Instance;
+            if (mgr == null)
+            {
+                Debug.LogWarning($"[StatsBarUI] PlayerStatsManager.Instance is null on '{gameObject.name}'");
+                return;
+            }
+
+            switch (statType)
+            {
+                case StatType.Health: mgr.OnHealthChanged -= UpdateBar; break;
+                case StatType.Mood:   mgr.OnMoodChanged   -= UpdateBar; break;
+                case StatType.Hunger: mgr.OnHungerChanged -= UpdateBar; break;
+            }
         }
 
-        public void UpdateBar(float normalizedValue)
+        private void UpdateBar(float value)
         {
-            if (barImage != null)
+            if (barImage == null)
             {
-                barImage.fillAmount = Mathf.Clamp01(normalizedValue);
+                Debug.LogWarning($"[StatsBarUI] barImage is null on '{gameObject.name}'");
+                return;
             }
-            else
-            {
-                Debug.LogWarning("Bar Image reference is missing in StatsBarUI.");
-            }
+
+            barImage.fillAmount = Mathf.Clamp01(value / 100f);
         }
     }
 }
