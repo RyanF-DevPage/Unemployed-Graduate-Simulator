@@ -4,7 +4,6 @@ namespace Simulator_Game
     {
         string JobTitle { get; }
         string CompanyName { get; }
-        string City { get; }
         JobType JobType { get; }
         float BaseSalary { get; }
         int RequiredLevel { get; }

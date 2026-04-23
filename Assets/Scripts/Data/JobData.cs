@@ -8,7 +8,6 @@ namespace Simulator_Game
         [Header("Listing")]
         public string jobTitle;
         public string companyName;
-        public string city;
         public JobType jobType;
 
         [Header("Requirements")]
@@ -23,7 +22,6 @@ namespace Simulator_Game
 
         public string JobTitle           => jobTitle;
         public string CompanyName        => companyName;
-        public string City               => city;
         public JobType JobType           => jobType;
         public float BaseSalary          => baseSalary;
         public int RequiredLevel         => requiredLevel;

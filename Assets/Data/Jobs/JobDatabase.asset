@@ -1,0 +1,18 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c854da4b4e31c8547ba9078c7fe084bf, type: 3}
+  m_Name: JobDatabase
+  m_EditorClassIdentifier: Assembly-CSharp::Simulator_Game.JobDatabase
+  jobs:
+  - {fileID: 11400000, guid: 26b0632a1b8f5104eb537a3bb3d012a9, type: 2}
+  - {fileID: 11400000, guid: 26b0632a1b8f5104eb537a3bb3d012a9, type: 2}
+  - {fileID: 11400000, guid: 26b0632a1b8f5104eb537a3bb3d012a9, type: 2}

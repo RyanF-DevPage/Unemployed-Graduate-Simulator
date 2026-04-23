@@ -1,0 +1,8 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(find \"D:/Unity Projects/Unemployed Graduate/Assets/Scripts\" -name \"*.cs\" -exec grep -l \"static.*Format\\\\|static.*Build\\\\|static.*Convert\" {} \\\\;)",
+      "Bash(find \"D:/Unity Projects/Unemployed Graduate/Assets/Scripts\" -name \"*Manager*.cs\" -exec ls -la {} \\\\;)"
+    ]
+  }
+}

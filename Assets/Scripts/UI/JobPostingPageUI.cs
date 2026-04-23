@@ -1,4 +1,4 @@
-using System.Text;
+using System.Linq;
 using TMPro;
 using UnityEngine;
 
@@ -15,7 +15,7 @@ namespace Simulator_Game
         public void Populate(JobData job)
         {
             titleText.text    = job.JobTitle;
-            subtitleText.text = $"{job.CompanyName} · {job.City} · {FormatJobType(job.JobType)}";
+            subtitleText.text = $"{job.CompanyName} · {FormatJobType(job.JobType)}";
             bodyRequirements.text     = BuildBulletList(job.Requirements);
             bodyResponsibilities.text = BuildBulletList(job.Responsibilities);
             bodyCompensation.text     = BuildCompensation(job);
@@ -32,23 +32,15 @@ namespace Simulator_Game
         private static string BuildBulletList(string[] items)
         {
             if (items == null || items.Length == 0) return string.Empty;
-            var sb = new StringBuilder();
-            foreach (var item in items)
-                sb.AppendLine($"• {item}");
-            return sb.ToString().TrimEnd();
+            return string.Join("\n", items.Select(i => $"• {i}"));
         }
 
         private static string BuildCompensation(JobData job)
         {
-            var sb = new StringBuilder();
-            sb.AppendLine($"${job.BaseSalary:N0}/month");
-            if (job.Benefits != null && job.Benefits.Length > 0)
-            {
-                sb.AppendLine();
-                foreach (var benefit in job.Benefits)
-                    sb.AppendLine($"• {benefit}");
-            }
-            return sb.ToString().TrimEnd();
+            var benefits = BuildBulletList(job.Benefits);
+            return benefits.Length > 0
+                ? $"${job.BaseSalary:N0}/month\n\n{benefits}"
+                : $"${job.BaseSalary:N0}/month";
         }
     }
 }
