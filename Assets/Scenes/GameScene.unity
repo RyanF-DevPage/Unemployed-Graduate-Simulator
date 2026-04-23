@@ -344,6 +344,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 881265455543027598, guid: 5b0dccb9df2c6a0408fe1da2484d55c8, type: 3}
+      propertyPath: m_text
+      value: Hunger Eats
+      objectReference: {fileID: 0}
+    - target: {fileID: 881265455543027598, guid: 5b0dccb9df2c6a0408fe1da2484d55c8, type: 3}
+      propertyPath: m_fontSize
+      value: 19.35
+      objectReference: {fileID: 0}
     - target: {fileID: 1163166034116362684, guid: 5b0dccb9df2c6a0408fe1da2484d55c8, type: 3}
       propertyPath: m_Name
       value: HungerEatsIcon

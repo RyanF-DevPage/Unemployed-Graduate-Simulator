@@ -16,5 +16,10 @@ namespace Simulator_Game
             GameManager.Instance.LoadGame();
             SceneManager.LoadScene("Scenes/GameScene");
         }
+
+        public void OnQuitClicked()
+        {
+            Application.Quit();
+        }
     }
 }

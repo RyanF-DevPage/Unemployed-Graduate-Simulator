@@ -11,7 +11,6 @@ namespace Simulator_Game
         [SerializeField] private TMP_Text titleText;
         [SerializeField] private TMP_Text typeText;
         [SerializeField] private TMP_Text salaryText;
-        [SerializeField] private TMP_Text oneLinerText;
 
         private Button _button;
 
@@ -21,8 +20,7 @@ namespace Simulator_Game
         {
             titleText.text    = job.JobTitle;
             typeText.text     = FormatJobType(job.JobType);
-            salaryText.text   = $"${job.BaseSalary:N0}/month";
-            oneLinerText.text = job.CompanyName;
+            salaryText.text   = $"${job.BaseSalary:N0}/hour";
 
             _button.onClick.RemoveAllListeners();
             _button.onClick.AddListener(() => onClick(job));

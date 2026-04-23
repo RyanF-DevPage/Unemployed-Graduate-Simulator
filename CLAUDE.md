@@ -23,48 +23,76 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 ## Architecture
 
 ### Singleton Managers
-Core managers use the singleton pattern and persist across scenes:
+All managers live on the `Managers` GameObject, use the singleton pattern, and persist across scenes via `DontDestroyOnLoad`:
+
 - `GameTimeManager` — drives in-game time (configurable via `GameTime` ScriptableObject). Broadcasts `OnTimeChanged` every in-game minute tick. Systems that react to time implement `ITimeDependent`.
-- `WindowsManager` — controls opening/closing UI windows (apps on the virtual desktop)
-- `SceneChanger` — scene loading with `DontDestroyOnLoad`
+- `PlayerStatsManager` — owns Health/Mood/Hunger depletion (via `ITimeDependent`), XP/leveling (`ILevelable`), wallet (`IWallet`), and JSON save/load (`ISaveable`). Fires `OnGameOver` when any stat hits 0.
+- `ApplicationStateManager` — single source of truth for all job application states. Implements `IJobApplication`. Stores `Dictionary<JobData, ApplicationStatus>` and exposes the four pipeline transitions: `TryApply`, `TryAdvanceToInterview`, `TryDirectOffer`, `TryPassInterview`. Eligibility rates are tunable `[SerializeField]` floats (plug skill bonuses in here later).
+- `WindowsManager` — controls opening/closing UI windows (activates/deactivates GameObjects).
+- `GameManager` — handles scene entry (NewGame/Load). Win/loss/cutscene callbacks are stubs.
+- `SceneChanger` — thin scene-loading singleton.
 
 ### ScriptableObject Configuration
-Stats and time config live in `Assets/Scripts/Configurations/`:
-- `PlayerStat` SO — Health, Hunger, Mood each as normalized 0–1 values with `UnityEvent OnStatValueChanged`. UI (e.g., `StatsBarUI`) subscribes to this event.
-- `GameTime` SO — configures time scale and start values. Currently set to Day 1, Hour 23, Minute 0, 5 min/real-second.
+- `PlayerData` SO (`Assets/Data/`) — Health, Mood, Hunger (0–100), level, XP, wallet balance. `PlayerStatsManager` reads/writes this at runtime and serialises it to JSON on save.
+- `GameTime` SO (`Assets/Scripts/Configurations/`) — time scale and start values. Currently: Day 1, Hour 23, Minute 0, 5 min/real-second.
+- `JobData` SO (`Assets/Data/Jobs/`) — implements `IJob`. One asset per job listing (title, company, type, salary, required level, requirements, responsibilities, benefits). Created via `Game/Job` asset menu.
+- `JobDatabase` SO (`Assets/Data/Jobs/`) — holds a `List<JobData>` and exposes `GetEligibleJobs(playerLevel)`.
 
 ### Interface-Driven Design
 All major gameplay systems are defined as interfaces in `Assets/Scripts/Interfaces/`:
 
 | Interface | Purpose |
 |---|---|
-| `IApp` | Any virtual desktop app (Browser, Notes, etc.) — Open/Close |
-| `IJob` | Job listing data: title, company, salary, required level, eligibility |
-| `IJobApplication` | Application lifecycle state machine (NotApplied → Pending → Interview → Accepted/Rejected) with status change events |
-| `ILevelable` | Level/XP tracking with level-up events |
+| `IApp` | Any virtual desktop app — Open/Close |
+| `IJob` | Job listing data: title, company, salary, required level, eligibility check |
+| `IJobApplication` | Implemented by `ApplicationStateManager` — `GetStatus`, `TryApply`, `CanAdvanceTo`, `OnApplicationStatusChanged` event |
+| `ILevelable` | Level/XP tracking with `OnLevelUp` event — implemented by `PlayerStatsManager` |
+| `IWallet` | Currency management (`AddFunds`, `TrySpend`) — implemented by `PlayerStatsManager` |
 | `IWorkable` | Active work sessions — StartWorking/StopWorking, OnWorkCompleted with earnings |
 | `IXPSource` | Any activity that grants XP |
-| `IStatAffector` | Modifies PlayerStats (food, events, entertainment) |
-| `ITimeDependent` | Subscribes to time ticks for passive effects |
+| `IStatAffector` | Modifies player stats (food, events, entertainment) |
+| `ITimeDependent` | Subscribes to `GameTimeManager.OnTimeChanged` ticks |
 | `IRandomEvent` | Chance-based events with trigger probability and conditions |
-| `ISaveable` | Save/Load persistence contract for SaveManager |
+| `ISaveable` | Save/Load persistence contract |
+| `ISkill` | Skill tree node — tier, SP cost, prerequisites, unlock state |
+| `IInterviewQuestion` | Interview question with answer choices and success weight |
+
+### Job Search Flow
+The browser job search is fully wired end-to-end:
+1. `SearchButton` (on `Browser/SearchEngine/SearchButton`) — on click, calls `JobBulletinPanelUI.Refresh(playerLevel)`.
+2. `JobBulletinPanelUI` (on `JobBulletinPanel`) — queries `JobDatabase.GetEligibleJobs`, instantiates `Posting.prefab` entries into `Jobs` container.
+3. `PostingEntryUI` (on `Posting.prefab`) — populates Title/Type/Salary/Company fields; button click calls back into `JobBulletinPanelUI`.
+4. `JobPostingPanelUI` (on `JobPostingPanel`) — calls `JobPostingPageUI.Populate(job)` and manages the Apply button + confirmation popup.
+5. `JobPostingPageUI` (on `JobPostingPanel/.../Content`) — fills the scroll view text fields.
+6. Confirming "Apply" calls `ApplicationStateManager.Instance.TryApply(job)` → NotApplied → Pending.
 
 ### UI Binding Pattern
 UI components subscribe to events from managers or ScriptableObjects directly:
-- `ClockUI` → subscribes to `GameTimeManager.OnTimeChanged`
-- `StatsBarUI` → subscribes to `PlayerStat.OnStatValueChanged`
+- `ClockUI` → `GameTimeManager.OnTimeChanged`
+- `StatsBarUI` → `PlayerStatsManager.OnHealthChanged` / `OnMoodChanged` / `OnHungerChanged`
+- `JobPostingPanelUI` → polls `ApplicationStateManager.Instance.GetStatus()` on open
 
 ### Prefab Templates
-`Assets/Prefabs/` contains base templates for extension:
-- `AppTemplate.prefab` — base for desktop apps implementing `IApp`
-- `JobPostingPageTemplate.prefab` — job browser listing layout
-- `StatsTemplate.prefab` — stat display UI
+`Assets/Prefabs/`:
+- `Posting.prefab` — bulletin board entry; has `PostingEntryUI` with TMP_Text fields wired (Title, Type, Salary, One-liner).
+- `AppTemplate.prefab` — base for desktop apps implementing `IApp`.
+- `StatsTemplate.prefab` — stat bar display UI.
 
 ## Implementation Status
 
-**Working systems:** Time management, stat display, ClockUI, scene transitions, main menu, task panel toggle animation, stat image fill.
+**Working systems:** Time management, stat display (Health/Mood/Hunger bars), ClockUI, scene transitions, main menu, task panel toggle animation, XP/leveling logic, wallet, stat depletion, JSON save/load for player data, job bulletin panel, job posting detail panel, Apply button with confirmation popup, application state machine (NotApplied → Pending), `SearchButton` wired to bulletin.
 
-**Skeleton/placeholder (not yet implemented):** `SearchButton`, `Clock` class, save system (`ISaveable`), random events (`IRandomEvent`), XP/leveling (`ILevelable`, `IXPSource`), job application state machine, active work sessions.
+**Skeleton/placeholder (not yet implemented):**
+- `GameManager` — `LoadOpeningCutScene()`, `OnPlayerWin()`, `OnPlayerLose()` are empty stubs; no Game Over or Win screen exists yet.
+- Application wait timer — `TryAdvanceToInterview` / `TryDirectOffer` exist but nothing calls them on a timer yet.
+- Interview system — `IInterviewQuestion` defined, no UI or evaluation logic.
+- Work sessions — `IWorkable` defined, no `StartWorking` implementation or time-jump.
+- Save system — `ISaveable` defined and implemented on `PlayerStatsManager`; not yet wired to a save/load trigger in the game loop.
+- Random events — `IRandomEvent` defined, no concrete events or trigger system.
+- XP/leveling HUD — `PlayerStatsManager` tracks XP and level but there is no HUD widget displaying them.
+- Skill tree — `ISkill` defined, no UI or skill logic implemented.
+- Hunger Eats, Wallet, Notes apps — icons exist on the desktop but no app panels built.
+- More job listings — only one `JobData` asset ("Warehouse Cleaner") exists in `Assets/Data/Jobs/`.
 
 ---
 
@@ -83,6 +111,11 @@ UI components subscribe to events from managers or ScriptableObjects directly:
 6. If any stat hits 0 → **Game Over**
 7. Earn enough XP → Level Up → gain Skill Points → spend in Skill Tree
 8. Wallet reaches **$1,000,000** → **Win**
+
+### Three game pillars mandate: 
+(1) players always know their application status — no ghosting, 
+(2) random events always affect stats, 
+(3) player freedom to explore jobs with outcome shaped by luck + skills + stats.
 
 ### Player Stats
 
@@ -163,7 +196,9 @@ All apps implement `IApp` (Open/Close). The desktop icon grid opens them via `Wi
 
 ### Random Events
 
-Triggered probabilistically via `IRandomEvent.CanTrigger()` + `Trigger()`. Affect player stats (`IStatAffector`). Three game pillars mandate: (1) players always know their application status — no ghosting, (2) random events always affect stats, (3) player freedom to explore jobs with outcome shaped by luck + skills + stats.
+Triggered probabilistically via `IRandomEvent.CanTrigger()` + `Trigger()`. Affect player stats (`IStatAffector`). 
+
+
 
 ### Win / Fail Conditions
 
