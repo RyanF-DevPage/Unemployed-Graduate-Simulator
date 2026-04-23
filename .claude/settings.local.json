@@ -16,7 +16,8 @@
       "Bash(export PATH=\"/c/Program Files/Git/cmd:/c/Program Files/Git/bin:$PATH\")",
       "Bash(export PATH=\"/c/Program Files/Git/cmd:$PATH\")",
       "Bash(git -C \"D:/Unity Projects/Unemployed Graduate\" log --oneline -5)",
-      "Bash(git -C \"D:/Unity Projects/Unemployed Graduate\" diff HEAD -- \"*.cs\")"
+      "Bash(git -C \"D:/Unity Projects/Unemployed Graduate\" diff HEAD -- \"*.cs\")",
+      "mcp__unity-mcp__Unity_ManageAsset"
     ]
   }
 }

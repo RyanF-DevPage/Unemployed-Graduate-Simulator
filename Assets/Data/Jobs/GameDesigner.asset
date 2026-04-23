@@ -1,0 +1,28 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e8c0d7dfd7331fc42b88bf39c7d66e0b, type: 3}
+  m_Name: GameDesigner
+  m_EditorClassIdentifier: Assembly-CSharp::Simulator_Game.JobData
+  jobTitle: Game Designer
+  companyName: Real United
+  jobType: 0
+  requiredLevel: 1
+  requirements:
+  - Understand the design and development stage of a PC online multiplayer shooter
+    game.
+  responsibilities:
+  - Design the game and communicate ideas clearly with our development team.
+  baseSalary: 35
+  workDurationHours: 40
+  benefits:
+  - Bonus for overtime work (because the developer will not be able to finish the
+    game on time)

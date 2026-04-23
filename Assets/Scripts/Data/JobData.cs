@@ -17,7 +17,7 @@ namespace Simulator_Game
 
         [Header("Compensation")]
         public float baseSalary;
-        public float workDurationMinutes;
+        public float workDurationHours;
         [TextArea] public string[] benefits;
 
         public string JobTitle           => jobTitle;
@@ -25,7 +25,7 @@ namespace Simulator_Game
         public JobType JobType           => jobType;
         public float BaseSalary          => baseSalary;
         public int RequiredLevel         => requiredLevel;
-        public float WorkDurationMinutes => workDurationMinutes;
+        public float WorkDurationHours => workDurationHours;
         public string[] Requirements     => requirements;
         public string[] Responsibilities => responsibilities;
         public string[] Benefits         => benefits;

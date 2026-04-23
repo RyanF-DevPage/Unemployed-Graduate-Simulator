@@ -7,7 +7,7 @@ namespace Simulator_Game
         JobType JobType { get; }
         float BaseSalary { get; }
         int RequiredLevel { get; }
-        float WorkDurationMinutes { get; }
+        float WorkDurationHours { get; }
         string[] Requirements { get; }
         string[] Responsibilities { get; }
         string[] Benefits { get; }

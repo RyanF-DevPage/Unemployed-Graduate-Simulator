@@ -14,5 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Simulator_Game.JobDatabase
   jobs:
   - {fileID: 11400000, guid: 26b0632a1b8f5104eb537a3bb3d012a9, type: 2}
-  - {fileID: 11400000, guid: 26b0632a1b8f5104eb537a3bb3d012a9, type: 2}
-  - {fileID: 11400000, guid: 26b0632a1b8f5104eb537a3bb3d012a9, type: 2}
+  - {fileID: 11400000, guid: c6a6a63897b0d89428df89fac3e51823, type: 2}
+  - {fileID: 11400000, guid: 0382edf54f5d16441a590212b7bc6af4, type: 2}
