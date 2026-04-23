@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -14,7 +13,6 @@ namespace Simulator_Game
         [SerializeField] private Button           yesButton;
         [SerializeField] private Button           noButton;
 
-        private readonly Dictionary<JobData, JobApplication> _applications = new();
         private JobData _currentJob;
 
         private void Awake()
@@ -40,22 +38,17 @@ namespace Simulator_Game
 
         private void RefreshApplyButton()
         {
-            if (!_applications.TryGetValue(_currentJob, out var application))
-            {
-                application = new JobApplication(_currentJob);
-                _applications[_currentJob] = application;
-            }
-
-            bool canApply = application.Status == ApplicationStatus.NotApplied;
+            var status = ApplicationStateManager.Instance.GetStatus(_currentJob);
+            bool canApply = status == ApplicationStatus.NotApplied;
             applyButton.interactable = canApply;
-            applyButtonText.text     = canApply ? "Apply" : application.Status.ToString();
+            applyButtonText.text     = canApply ? "Apply" : status.ToString();
         }
 
         private void OnApplyClicked() => confirmationPopup.SetActive(true);
 
         private void OnConfirmYes()
         {
-            _applications[_currentJob].Apply();
+            ApplicationStateManager.Instance.TryApply(_currentJob);
             confirmationPopup.SetActive(false);
             RefreshApplyButton();
         }
