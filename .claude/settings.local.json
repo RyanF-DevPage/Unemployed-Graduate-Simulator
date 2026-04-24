@@ -18,7 +18,8 @@
       "Bash(git -C \"D:/Unity Projects/Unemployed Graduate\" log --oneline -5)",
       "Bash(git -C \"D:/Unity Projects/Unemployed Graduate\" diff HEAD -- \"*.cs\")",
       "mcp__unity-mcp__Unity_ManageAsset",
-      "Bash(echo \"exit: $?\")"
+      "Bash(echo \"exit: $?\")",
+      "Bash(xargs grep *)"
     ]
   }
 }

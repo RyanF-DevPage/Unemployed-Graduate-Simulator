@@ -1,20 +1,18 @@
 using UnityEngine;
-using UnityEngine.UI;
 
 namespace Simulator_Game
 {
-    public class WindowsManager : MonoBehaviour
+    public static class WindowsManager
     {
-        public void OpenWindow(GameObject window)
+        public static void OpenWindow(GameObject window)
         {
             window.SetActive(true);
         }
 
-        public void CloseWindow(GameObject window)
+        public static void CloseWindow(GameObject window)
         {
             window.SetActive(false);
         }
-
 
     }
 }
