@@ -8,8 +8,5 @@ namespace Simulator_Game
     {
         /// <summary>Apply the effect (buff or debuff) via the stats manager.</summary>
         void ApplyEffect(PlayerStatsManager manager);
-
-        /// <summary>Magnitude of the change — positive restores, negative depletes.</summary>
-        float EffectAmount { get; }
     }
 }

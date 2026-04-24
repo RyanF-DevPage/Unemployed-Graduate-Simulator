@@ -6,6 +6,9 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 **Unemployed Graduate** is a 2D life/career simulation game built in Unity 6 (6000.3.11f1) using URP. The player manages a graduate character's daily life stats (Health, Hunger, Mood) while applying for jobs, working, earning income/XP, and leveling up to access better opportunities.
 
+## Proeject scope
+Always think this project as a future expandable prototype. The goal is to ship it as a commercial game, so every design choice make should consider its scalability and maintainability.
+
 ## Unity Development
 
 ### Common Operations

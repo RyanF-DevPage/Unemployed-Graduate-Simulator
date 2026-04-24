@@ -13,10 +13,10 @@ MonoBehaviour:
   m_Name: PlayerData
   m_EditorClassIdentifier: Assembly-CSharp::Simulator_Game.PlayerData
   health: 100
-  mood: 85
-  hunger: 85
+  mood: 100
+  hunger: 100
   level: 1
   currentXP: 0
   xpToNextLevel: 100
   skillPoints: 0
-  walletBalance: 100000000
+  walletBalance: 0

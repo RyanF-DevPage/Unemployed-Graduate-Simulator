@@ -25,6 +25,7 @@ namespace Simulator_Game
 
         private void Awake()
         {
+            _isPaused = true;
             if (Instance != null && Instance != this)
             {
                 Destroy(gameObject);

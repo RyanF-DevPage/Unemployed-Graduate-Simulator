@@ -17,13 +17,13 @@ namespace Simulator_Game
             winMainMenuButton.onClick.AddListener(GoToMainMenu);
         }
 
-        private void OnEnable()
+        private void Start()
         {
             GameManager.Instance.OnGameOverTriggered += ShowGameOver;
             GameManager.Instance.OnGameWinTriggered  += ShowWin;
         }
 
-        private void OnDisable()
+        private void OnDestroy()
         {
             if (GameManager.Instance == null) return;
             GameManager.Instance.OnGameOverTriggered -= ShowGameOver;
