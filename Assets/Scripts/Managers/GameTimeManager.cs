@@ -28,12 +28,11 @@ namespace Simulator_Game
             if (Instance != null && Instance != this)
             {
                 Destroy(gameObject);
+                return;
             }
-            else
-            {
-                Instance = this;
-                DontDestroyOnLoad(gameObject);
-            }
+            Instance = this;
+            DontDestroyOnLoad(gameObject);
+            _totalMinute = _gameTimeConfig.DefaultStartInMinutes;
         }
         #endregion
 
@@ -47,6 +46,7 @@ namespace Simulator_Game
 
         public void StartNewGame()
         {
+            _isPaused = false;
             PlayerPrefs.DeleteKey(SaveTimeKey);
             _totalMinute = _gameTimeConfig.DefaultStartInMinutes;
             EventNotifier();
@@ -74,6 +74,7 @@ namespace Simulator_Game
 
         public void Load()
         {
+            _isPaused = false;
             _totalMinute = PlayerPrefs.HasKey(SaveTimeKey)
                 ? PlayerPrefs.GetFloat(SaveTimeKey)
                 : _gameTimeConfig.DefaultStartInMinutes;

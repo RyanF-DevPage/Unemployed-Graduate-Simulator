@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace Simulator_Game
 {
-    [CreateAssetMenu(fileName = "GameTime", menuName = "Scriptable Objects/GameTime")]
+    [CreateAssetMenu(fileName = "GameTime", menuName = "Game/GameTime")]
     public class GameTime : ScriptableObject
     {
         [Header("Default Start Time")]

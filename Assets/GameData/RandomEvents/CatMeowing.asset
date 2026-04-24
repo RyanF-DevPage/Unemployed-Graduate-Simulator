@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 877c73050aad42848a0e2e79bcd3a1da, type: 3}
+  m_Name: CatMeowing
+  m_EditorClassIdentifier: Assembly-CSharp::Simulator_Game.RandomEventData
+  eventTitle: Your Cat is Meowing!
+  eventDescription: Your cat is hungry! Go Feed and play with him!
+  triggerProbability: 0.25
+  effects:
+  - type: 1
+    amount: 10
+  - type: 5
+    amount: 10

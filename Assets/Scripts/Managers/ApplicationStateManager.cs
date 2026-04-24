@@ -46,12 +46,9 @@ namespace Simulator_Game
             return target switch
             {
                 ApplicationStatus.Pending   => status == ApplicationStatus.NotApplied,
-                ApplicationStatus.Interview => status == ApplicationStatus.Pending
-                                              && URandom.value <= interviewScreeningRate,
-                ApplicationStatus.Accepted  => (status == ApplicationStatus.Pending
-                                                    && URandom.value <= directOfferRate)
-                                              || (status == ApplicationStatus.Interview
-                                                    && URandom.value <= interviewPassRate),
+                ApplicationStatus.Interview => status == ApplicationStatus.Pending,
+                ApplicationStatus.Accepted  => status == ApplicationStatus.Pending
+                                              || status == ApplicationStatus.Interview,
                 ApplicationStatus.Rejected  => status == ApplicationStatus.Pending
                                               || status == ApplicationStatus.Interview,
                 _                           => false,

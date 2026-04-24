@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: GameTime
   m_EditorClassIdentifier: Assembly-CSharp::Simulator_Game.GameTime
   defaultStartDay: 1
-  defaultStartHour: 9
+  defaultStartHour: 8
   defaultStartMinute: 0
   minutePerRealSecond: 1
