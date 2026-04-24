@@ -41,6 +41,8 @@ namespace Simulator_Game
         public void StartNewGame()
         {
             _gameEnded = false;
+            ApplicationStateManager.Instance.Reset();
+            EmailManager.Instance.Reset();
             PlayerStatsManager.Instance.ResetAllStats();
             GameTimeManager.Instance.StartNewGame();
         }

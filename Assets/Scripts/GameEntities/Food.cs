@@ -5,7 +5,7 @@ namespace Simulator_Game
     [RequireComponent(typeof(Collider2D))]
     public class Food : MonoBehaviour, IStatAffector
     {
-        [SerializeField] private float healthGain = 20f;
+        [SerializeField] private float hungerGain = 30f;
         [SerializeField] private float moodGain   = 10f;
 
         private Collider2D _collider;
@@ -27,7 +27,7 @@ namespace Simulator_Game
 
         public void ApplyEffect(PlayerStatsManager manager)
         {
-            manager.ModifyHealth(healthGain);
+            manager.ModifyHunger(hungerGain);
             manager.ModifyMood(moodGain);
             Destroy(gameObject);
         }

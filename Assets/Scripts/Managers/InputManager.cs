@@ -5,7 +5,7 @@ using UnityEngine.InputSystem;
 namespace Simulator_Game
 {
     [DefaultExecutionOrder(-100)]
-    public class InputManager : MonoBehaviour
+    public class InputManager : MonoBehaviour, IInputManager
     {
         [SerializeField] private InputActionAsset inputActions;
 
@@ -22,6 +22,7 @@ namespace Simulator_Game
             if (Instance != null && Instance != this) { Destroy(gameObject); return; }
             Instance = this;
             DontDestroyOnLoad(gameObject);
+            ServiceLocator.Register<IInputManager>(this);
 
             var ui = inputActions.FindActionMap("UI", throwIfNotFound: true);
             _click = ui.FindAction("Click", throwIfNotFound: true);
@@ -31,6 +32,11 @@ namespace Simulator_Game
 
         private void OnEnable()  => _click.performed += HandleClick;
         private void OnDisable() => _click.performed -= HandleClick;
+
+        private void OnDestroy()
+        {
+            if (Instance == this) ServiceLocator.Unregister<IInputManager>();
+        }
 
         private void HandleClick(InputAction.CallbackContext ctx)
         {

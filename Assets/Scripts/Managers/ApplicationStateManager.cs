@@ -27,6 +27,20 @@ namespace Simulator_Game
             if (Instance != null && Instance != this) { Destroy(gameObject); return; }
             Instance = this;
             DontDestroyOnLoad(gameObject);
+            ServiceLocator.Register<IJobApplication>(this);
+        }
+
+        private void OnDestroy()
+        {
+            if (Instance == this) ServiceLocator.Unregister<IJobApplication>();
+        }
+
+        // ── Reset ─────────────────────────────────────────────────────────────
+
+        public void Reset()
+        {
+            StopAllCoroutines();
+            _statuses.Clear();
         }
 
         // ── IJobApplication ───────────────────────────────────────────────────

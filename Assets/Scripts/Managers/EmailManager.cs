@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Simulator_Game
 {
-    public class EmailManager : MonoBehaviour
+    public class EmailManager : MonoBehaviour, IEmailService
     {
         public static EmailManager Instance { get; private set; }
 
@@ -23,6 +23,7 @@ namespace Simulator_Game
             if (Instance != null && Instance != this) { Destroy(gameObject); return; }
             Instance = this;
             DontDestroyOnLoad(gameObject);
+            ServiceLocator.Register<IEmailService>(this);
         }
 
         private void Start()
@@ -32,8 +33,15 @@ namespace Simulator_Game
 
         private void OnDestroy()
         {
+            if (Instance == this) ServiceLocator.Unregister<IEmailService>();
             if (ApplicationStateManager.Instance != null)
                 ApplicationStateManager.Instance.OnApplicationStatusChanged -= HandleStatusChange;
+        }
+
+        public void Reset()
+        {
+            _emails.Clear();
+            OnMailboxChanged?.Invoke();
         }
 
         public void MarkRead(Email email)
