@@ -19,7 +19,11 @@
       "Bash(git -C \"D:/Unity Projects/Unemployed Graduate\" diff HEAD -- \"*.cs\")",
       "mcp__unity-mcp__Unity_ManageAsset",
       "Bash(echo \"exit: $?\")",
-      "Bash(xargs grep *)"
+      "Bash(xargs grep *)",
+      "Bash(git -C \"D:/Unity Projects/Unemployed Graduate\" status)",
+      "Bash(git -C \"D:/Unity Projects/Unemployed Graduate\" diff Assets/Scripts/Managers/ApplicationStateManager.cs Assets/Scripts/Managers/EmailManager.cs Assets/Scripts/Managers/GameManager.cs Assets/Scripts/Managers/InputManager.cs Assets/Scripts/GameEntities/Food.cs)",
+      "Bash(git -C \"D:/Unity Projects/Unemployed Graduate\" add Assets/Scripts/Core/ Assets/Scripts/Core.meta Assets/Scripts/Interfaces/IEmailService.cs Assets/Scripts/Interfaces/IEmailService.cs.meta Assets/Scripts/Interfaces/IInputManager.cs Assets/Scripts/Interfaces/IInputManager.cs.meta Assets/Scripts/GameEntities/AnimatorController.cs Assets/Scripts/GameEntities/AnimatorController.cs.meta Assets/Scripts/Managers/AnimatorController.cs Assets/Scripts/Managers/AnimatorController.cs.meta Assets/Scripts/Managers/ApplicationStateManager.cs Assets/Scripts/Managers/EmailManager.cs Assets/Scripts/Managers/GameManager.cs Assets/Scripts/Managers/InputManager.cs Assets/Scripts/GameEntities/Food.cs)",
+      "Bash(git -C 'D:/Unity Projects/Unemployed Graduate' commit -m ' *)"
     ]
   }
 }
