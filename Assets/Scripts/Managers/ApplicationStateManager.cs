@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using URandom = UnityEngine.Random;
@@ -7,6 +8,9 @@ namespace Simulator_Game
 {
     public class ApplicationStateManager : MonoBehaviour, IJobApplication
     {
+        [Header("Response Timer")]
+        [SerializeField] private float responseWaitInGameMinutes = 60f;
+
         [Header("Eligibility Rates (0 = never, 1 = always)")]
         [SerializeField, Range(0f, 1f)] private float interviewScreeningRate = 1f;
         [SerializeField, Range(0f, 1f)] private float directOfferRate        = 0f;
@@ -37,7 +41,17 @@ namespace Simulator_Game
         {
             if (GetStatus(job) != ApplicationStatus.NotApplied) return false;
             SetStatus(job, ApplicationStatus.Pending);
+            StartCoroutine(WaitAndRespond(job));
             return true;
+        }
+
+        private IEnumerator WaitAndRespond(JobData job)
+        {
+            float target = GameTimeManager.Instance.TotalMinutes + responseWaitInGameMinutes;
+            yield return new WaitUntil(() => GameTimeManager.Instance.TotalMinutes >= target);
+            if (GetStatus(job) != ApplicationStatus.Pending) yield break;
+            if (!TryDirectOffer(job) && !TryAdvanceToInterview(job))
+                SetStatus(job, ApplicationStatus.Rejected);
         }
 
         public bool CanAdvanceTo(JobData job, ApplicationStatus target)

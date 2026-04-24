@@ -1137,6 +1137,8 @@ GameObject:
   - component: {fileID: 986389660}
   - component: {fileID: 986389659}
   - component: {fileID: 986389663}
+  - component: {fileID: 986389664}
+  - component: {fileID: 986389665}
   m_Layer: 0
   m_Name: Managers
   m_TagString: Untagged
@@ -1213,6 +1215,34 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Simulator_Game.InputManager
   inputActions: {fileID: -944628639613478452, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
+--- !u!114 &986389664
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 986389658}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2a154348d1f7ddd42a41bc7501ced94a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Simulator_Game.ApplicationStateManager
+  responseWaitMinutes: 1
+  interviewScreeningRate: 1
+  directOfferRate: 0
+  interviewPassRate: 1
+--- !u!114 &986389665
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 986389658}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1ac4084f496d24e41b10f53caaa74d01, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Simulator_Game.EmailManager
 --- !u!1 &1510401404
 GameObject:
   m_ObjectHideFlags: 0
