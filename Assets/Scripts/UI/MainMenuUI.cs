@@ -7,7 +7,6 @@ namespace Simulator_Game
     {
         public void OnNewGameClicked()
         {
-            GameManager.Instance.StartNewGame();
             SceneManager.LoadScene("Scenes/GameScene");
         }
 

@@ -30,8 +30,8 @@ namespace Simulator_Game
             ui.Enable();
         }
 
-        private void OnEnable()  => _click.performed += HandleClick;
-        private void OnDisable() => _click.performed -= HandleClick;
+        private void OnEnable()  { if (_click != null) _click.performed += HandleClick; }
+        private void OnDisable() { if (_click != null) _click.performed -= HandleClick; }
 
         private void OnDestroy()
         {

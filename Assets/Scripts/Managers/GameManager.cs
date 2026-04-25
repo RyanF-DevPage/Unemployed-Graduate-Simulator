@@ -54,7 +54,6 @@ namespace Simulator_Game
             GameTimeManager.Instance.Load();
         }
 
-        public void LoadOpeningCutScene() { }
 
         public void OnPlayerWin()
         {
