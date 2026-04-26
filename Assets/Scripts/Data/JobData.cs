@@ -17,8 +17,12 @@ namespace Simulator_Game
 
         [Header("Compensation")]
         public float baseSalary;
-        public float workDurationHours;
         [TextArea] public string[] benefits;
+
+        [Header("Work Schedule")]
+        [Range(0, 23)] public int workStartHour = 8;
+        [Range(0, 23)] public int workEndHour   = 17;
+        public float workDurationHours => workEndHour - workStartHour;
 
         [Header("Application Rates (0 = never, 1 = always)")]
         [Range(0f, 1f)] public float interviewScreeningRate = 0.8f;

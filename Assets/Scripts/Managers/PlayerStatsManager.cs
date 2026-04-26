@@ -126,10 +126,11 @@ namespace Simulator_Game
         }
 
         // ── Read-only accessors ──────────────────────────────────────────────
-        public float Health      => data.health;
-        public float Mood        => data.mood;
-        public float Hunger      => data.hunger;
-        public int   SkillPoints => data.skillPoints;
+        public float Health             => data.health;
+        public float Mood               => data.mood;
+        public float Hunger             => data.hunger;
+        public int   SkillPoints        => data.skillPoints;
+        public float HungerDepletionRate => hungerDepletionRate;
 
         // ── Reset ────────────────────────────────────────────────────────────
         public void ResetAllStats()

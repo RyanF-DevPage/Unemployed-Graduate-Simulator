@@ -30,6 +30,16 @@ namespace Simulator_Game
             if (Instance == this) ServiceLocator.Unregister<IJobApplication>();
         }
 
+        // ── Queries ───────────────────────────────────────────────────────────
+
+        public List<JobData> GetJobsWithStatus(ApplicationStatus status)
+        {
+            var result = new List<JobData>();
+            foreach (var kvp in _statuses)
+                if (kvp.Value == status) result.Add(kvp.Key);
+            return result;
+        }
+
         // ── Reset ─────────────────────────────────────────────────────────────
 
         public void Reset()
