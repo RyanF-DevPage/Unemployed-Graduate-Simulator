@@ -25,3 +25,6 @@ MonoBehaviour:
   workDurationHours: 40
   benefits:
   - Shorted Longivity (The world isn't that great to live long, right?)
+  interviewScreeningRate: 1
+  directOfferRate: 0.5
+  interviewPassRate: 0.9

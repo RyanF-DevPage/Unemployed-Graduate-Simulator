@@ -11,11 +11,6 @@ namespace Simulator_Game
         [Header("Response Timer")]
         [SerializeField] private float responseWaitInGameMinutes = 60f;
 
-        [Header("Eligibility Rates (0 = never, 1 = always)")]
-        [SerializeField, Range(0f, 1f)] private float interviewScreeningRate = 1f;
-        [SerializeField, Range(0f, 1f)] private float directOfferRate        = 0f;
-        [SerializeField, Range(0f, 1f)] private float interviewPassRate      = 1f;
-
         public static ApplicationStateManager Instance { get; private set; }
 
         public event Action<JobData, ApplicationStatus> OnApplicationStatusChanged;
@@ -88,17 +83,17 @@ namespace Simulator_Game
         /// <summary>Pending → Interview. Game-driven (e.g. wait timer expired).</summary>
         public bool TryAdvanceToInterview(JobData job)
             => TryTransition(job, ApplicationStatus.Pending, ApplicationStatus.Interview,
-                             interviewScreeningRate);
+                             job.interviewScreeningRate);
 
         /// <summary>Pending → Accepted. Game-driven direct offer (skips interview).</summary>
         public bool TryDirectOffer(JobData job)
             => TryTransition(job, ApplicationStatus.Pending, ApplicationStatus.Accepted,
-                             directOfferRate);
+                             job.directOfferRate);
 
         /// <summary>Interview → Accepted. Game-driven after interview evaluation.</summary>
         public bool TryPassInterview(JobData job)
             => TryTransition(job, ApplicationStatus.Interview, ApplicationStatus.Accepted,
-                             interviewPassRate);
+                             job.interviewPassRate);
 
         // ── Internal ──────────────────────────────────────────────────────────
 

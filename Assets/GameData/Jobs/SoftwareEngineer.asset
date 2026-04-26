@@ -25,3 +25,6 @@ MonoBehaviour:
   workDurationHours: 40
   benefits:
   - Less hair problem (because you will have less hair)
+  interviewScreeningRate: 0.5
+  directOfferRate: 0
+  interviewPassRate: 0.5

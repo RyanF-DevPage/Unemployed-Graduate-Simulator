@@ -20,6 +20,11 @@ namespace Simulator_Game
         public float workDurationHours;
         [TextArea] public string[] benefits;
 
+        [Header("Application Rates (0 = never, 1 = always)")]
+        [Range(0f, 1f)] public float interviewScreeningRate = 0.8f;
+        [Range(0f, 1f)] public float directOfferRate        = 0f;
+        [Range(0f, 1f)] public float interviewPassRate      = 0.5f;
+
         public string JobTitle           => jobTitle;
         public string CompanyName        => companyName;
         public JobType JobType           => jobType;

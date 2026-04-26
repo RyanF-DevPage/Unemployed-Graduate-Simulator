@@ -62,6 +62,8 @@ namespace Simulator_Game
         public void BeginEvent() => _isInEvent = true;
         public void EndEvent() => _isInEvent = false;
 
+        public bool IsPaused => _isPaused;
+
         public void Pause() => _isPaused = true;
         public void Resume() => _isPaused = false;
 
