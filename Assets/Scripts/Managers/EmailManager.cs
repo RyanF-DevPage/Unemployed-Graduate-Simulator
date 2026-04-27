@@ -55,6 +55,8 @@ namespace Simulator_Game
         {
             var email = BuildEmail(job, status);
             if (email == null) return;
+            email.job = job;
+            email.relatedStatus = status;
             _emails.Insert(0, email);
             OnMailboxChanged?.Invoke();
         }

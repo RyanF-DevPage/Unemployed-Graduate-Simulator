@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 46add129ccea5644a8c97fb57da1d10e, type: 3}
+  m_Name: InterviewQuestionBank
+  m_EditorClassIdentifier: Assembly-CSharp::Simulator_Game.InterviewQuestionBank
+  questions:
+  - {fileID: 11400000, guid: 18a41364d18c8e042af4aeec84efbdf9, type: 2}
+  - {fileID: 11400000, guid: ce3a541c6685c4e48867752f741e0ea7, type: 2}
+  - {fileID: 11400000, guid: ce391f84e77025e4f9317b5d7c6bf132, type: 2}
+  - {fileID: 11400000, guid: 884ed074025e83d43b828135e7c0704c, type: 2}
+  - {fileID: 11400000, guid: e45bc01fde009aa40820a2a327497738, type: 2}

@@ -1,0 +1,28 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d627df4260b47b94780c949f0ee7ee7d, type: 3}
+  m_Name: Q_Why
+  m_EditorClassIdentifier: Assembly-CSharp::Simulator_Game.InterviewQuestion
+  questionText: Why do you want to work here?
+  answerPool:
+  - answerText: Your mission resonates with me and I see clear ways my skills will
+      accelerate it.
+    scoreModifier: 0.3
+  - answerText: I need a job and you're hiring.
+    scoreModifier: -0.3
+  - answerText: The salary and benefits are competitive.
+    scoreModifier: -0.1
+  - answerText: I've followed your work for a while and want to contribute to the
+      next chapter.
+    scoreModifier: 0.2
+  - answerText: My friend works here and recommended I apply.
+    scoreModifier: 0

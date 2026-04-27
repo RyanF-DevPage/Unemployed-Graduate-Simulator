@@ -10,5 +10,8 @@ namespace Simulator_Game
         public string receiver;
         public string content;
         public bool isRead;
+
+        public ApplicationStatus relatedStatus;
+        [NonSerialized] public JobData job;
     }
 }

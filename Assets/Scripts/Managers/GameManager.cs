@@ -43,6 +43,7 @@ namespace Simulator_Game
             _gameEnded = false;
             ApplicationStateManager.Instance.Reset();
             EmailManager.Instance.Reset();
+            if (InterviewSession.Instance != null) InterviewSession.Instance.Reset();
             PlayerStatsManager.Instance.ResetAllStats();
             GameTimeManager.Instance.StartNewGame();
         }

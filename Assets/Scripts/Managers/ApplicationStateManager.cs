@@ -88,6 +88,30 @@ namespace Simulator_Game
             };
         }
 
+        // ── Post-interview evaluation ─────────────────────────────────────────
+
+        /// <summary>
+        /// Schedules a post-interview decision after responseWaitInGameMinutes.
+        /// scoreModifier (sum of selected answer modifiers, in [-0.9, 0.9]) is
+        /// added to the job's interviewPassRate and clamped to [0, 1].
+        /// </summary>
+        public void PostInterview(JobData job, float scoreModifier)
+        {
+            StartCoroutine(WaitAndEvaluateInterview(job, scoreModifier));
+        }
+
+        private IEnumerator WaitAndEvaluateInterview(JobData job, float scoreModifier)
+        {
+            float target = GameTimeManager.Instance.TotalMinutes + responseWaitInGameMinutes;
+            yield return new WaitUntil(() => GameTimeManager.Instance.TotalMinutes >= target);
+            if (GetStatus(job) != ApplicationStatus.Interview) yield break;
+
+            float effectiveRate = Mathf.Clamp01(job.interviewPassRate + scoreModifier);
+            SetStatus(job, URandom.value <= effectiveRate
+                ? ApplicationStatus.Accepted
+                : ApplicationStatus.Rejected);
+        }
+
         // ── The three game-driven transitions ─────────────────────────────────
 
         /// <summary>Pending → Interview. Game-driven (e.g. wait timer expired).</summary>

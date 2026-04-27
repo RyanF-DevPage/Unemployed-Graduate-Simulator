@@ -135,6 +135,7 @@ GameObject:
   - component: {fileID: 65582846}
   - component: {fileID: 65582852}
   - component: {fileID: 65582853}
+  - component: {fileID: 65582854}
   m_Layer: 0
   m_Name: Managers
   m_TagString: Untagged
@@ -248,6 +249,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0bc4d630fa067d04ebda255ecf2aad07, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Simulator_Game.WorkManager
+--- !u!114 &65582854
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 65582845}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d03dfef01efe658418c148149bb311ad, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Simulator_Game.InterviewSession
+  bank: {fileID: 11400000, guid: 54cf1e25204e07941b0474fe36990937, type: 2}
+  stageCount: 3
+  answersPerStage: 3
 --- !u!1 &2128916458
 GameObject:
   m_ObjectHideFlags: 0

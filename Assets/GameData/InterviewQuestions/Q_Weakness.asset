@@ -1,0 +1,28 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d627df4260b47b94780c949f0ee7ee7d, type: 3}
+  m_Name: Q_Weakness
+  m_EditorClassIdentifier: Assembly-CSharp::Simulator_Game.InterviewQuestion
+  questionText: What's your greatest weakness?
+  answerPool:
+  - answerText: I used to take on too much. I now use a weekly review to commit only
+      to what I can finish well.
+    scoreModifier: 0.3
+  - answerText: I don't really have any weaknesses.
+    scoreModifier: -0.3
+  - answerText: I'm too detail-oriented.
+    scoreModifier: -0.1
+  - answerText: I'm working on giving feedback more directly. I journal after 1:1s
+      to identify what I should have said.
+    scoreModifier: 0.2
+  - answerText: I get frustrated when others don't pull their weight.
+    scoreModifier: -0.2

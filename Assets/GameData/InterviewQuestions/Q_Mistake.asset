@@ -1,0 +1,30 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d627df4260b47b94780c949f0ee7ee7d, type: 3}
+  m_Name: Q_Mistake
+  m_EditorClassIdentifier: Assembly-CSharp::Simulator_Game.InterviewQuestion
+  questionText: Describe a significant mistake you made and what you learned from
+    it.
+  answerPool:
+  - answerText: I missed a deadline, owned it, communicated early, and built better
+      tracking afterwards.
+    scoreModifier: 0.3
+  - answerText: I haven't really made any significant mistakes.
+    scoreModifier: -0.3
+  - answerText: I shipped a bug to production. I learned to test edge cases more
+      carefully.
+    scoreModifier: 0.2
+  - answerText: It was actually my coworker's fault, but I got blamed.
+    scoreModifier: -0.3
+  - answerText: I underestimated a project's scope. Now I always pad estimates and
+      surface risks early.
+    scoreModifier: 0.25
