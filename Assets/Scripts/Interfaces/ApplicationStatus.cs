@@ -8,7 +8,8 @@ namespace Simulator_Game
         NotApplied,
         Pending,        // Applied — waiting for a response
         Interview,      // Passed initial screening — in behavioural interview stage
-        Accepted,       // Job landed
+        OfferReceived,  // Company offered — awaiting player response
+        Accepted,       // Player confirmed the offer — going to work
         Rejected        // Rejected at any stage
     }
 }

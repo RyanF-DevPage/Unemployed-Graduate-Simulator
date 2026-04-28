@@ -79,13 +79,14 @@ namespace Simulator_Game
                 content  = $"We are pleased to invite you to interview for {job.JobTitle} at {job.CompanyName}. " +
                            "Please prepare for a behavioral interview."
             },
-            ApplicationStatus.Accepted => new Email
+            ApplicationStatus.OfferReceived => new Email
             {
                 title    = "Job Offer",
                 sender   = job.CompanyName,
                 receiver = "You",
                 content  = $"Congratulations! We are delighted to offer you the position of {job.JobTitle} " +
-                           $"at {job.CompanyName} at ${job.BaseSalary:N0}/hour."
+                           $"at {job.CompanyName} at ${job.BaseSalary:N0}/hour. " +
+                           "Please let us know whether you would like to accept or decline."
             },
             ApplicationStatus.Rejected => new Email
             {

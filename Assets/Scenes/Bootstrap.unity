@@ -167,7 +167,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2a154348d1f7ddd42a41bc7501ced94a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Simulator_Game.ApplicationStateManager
-  responseWaitInGameMinutes: 60
+  responseWaitInGameMinutes: 20
 --- !u!114 &65582848
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -193,8 +193,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Simulator_Game.PlayerStatsManager
   data: {fileID: 11400000, guid: 57d2858e9b632e340b0c74c0d15d1ad2, type: 2}
-  moodDepletionRate: 1
-  hungerDepletionRate: 1
+  moodDepletionRate: 0
+  hungerDepletionRate: 0
   healthCriticalDepletionRate: 2
 --- !u!114 &65582850
 MonoBehaviour:

@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Simulator_Game
@@ -10,6 +11,7 @@ namespace Simulator_Game
         public event Action<JobData> OnWorkTimeReached;
 
         private bool _workInProgress;
+        private readonly Dictionary<JobData, int> _acceptedDay = new();
 
         private void Awake()
         {
@@ -21,12 +23,23 @@ namespace Simulator_Game
         private void Start()
         {
             GameTimeManager.Instance.OnTimeChanged += OnTimeUpdated;
+            ApplicationStateManager.Instance.OnApplicationStatusChanged += OnStatusChanged;
         }
 
         private void OnDestroy()
         {
             if (GameTimeManager.Instance != null)
                 GameTimeManager.Instance.OnTimeChanged -= OnTimeUpdated;
+            if (ApplicationStateManager.Instance != null)
+                ApplicationStateManager.Instance.OnApplicationStatusChanged -= OnStatusChanged;
+        }
+
+        private void OnStatusChanged(JobData job, ApplicationStatus status)
+        {
+            if (status == ApplicationStatus.Accepted)
+                _acceptedDay[job] = GameTimeManager.Instance.CurrentDay;
+            else
+                _acceptedDay.Remove(job);
         }
 
         private void OnTimeUpdated(int day, int hour, int minute)
@@ -35,7 +48,8 @@ namespace Simulator_Game
 
             foreach (var job in ApplicationStateManager.Instance.GetJobsWithStatus(ApplicationStatus.Accepted))
             {
-                if (hour == job.workStartHour)
+                if (hour == job.workStartHour
+                    && _acceptedDay.TryGetValue(job, out int acceptedDay) && day > acceptedDay)
                 {
                     _workInProgress = true;
                     GameTimeManager.Instance.Pause();

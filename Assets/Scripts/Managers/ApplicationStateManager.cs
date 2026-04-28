@@ -16,6 +16,7 @@ namespace Simulator_Game
         public event Action<JobData, ApplicationStatus> OnApplicationStatusChanged;
 
         private readonly Dictionary<JobData, ApplicationStatus> _statuses = new();
+        private readonly Dictionary<JobData, int> _rejectedDay = new();
 
         private void Awake()
         {
@@ -46,6 +47,7 @@ namespace Simulator_Game
         {
             StopAllCoroutines();
             _statuses.Clear();
+            _rejectedDay.Clear();
         }
 
         // ── IJobApplication ───────────────────────────────────────────────────
@@ -58,7 +60,14 @@ namespace Simulator_Game
 
         public bool TryApply(JobData job)
         {
-            if (GetStatus(job) != ApplicationStatus.NotApplied) return false;
+            var status = GetStatus(job);
+            if (status == ApplicationStatus.Rejected)
+            {
+                if (_rejectedDay.TryGetValue(job, out int day) && day >= GameTimeManager.Instance.CurrentDay)
+                    return false;
+                // New day — fall through and allow re-apply
+            }
+            else if (status != ApplicationStatus.NotApplied) return false;
             SetStatus(job, ApplicationStatus.Pending);
             StartCoroutine(WaitAndRespond(job));
             return true;
@@ -70,7 +79,10 @@ namespace Simulator_Game
             yield return new WaitUntil(() => GameTimeManager.Instance.TotalMinutes >= target);
             if (GetStatus(job) != ApplicationStatus.Pending) yield break;
             if (!TryDirectOffer(job) && !TryAdvanceToInterview(job))
+            {
+                _rejectedDay[job] = GameTimeManager.Instance.CurrentDay;
                 SetStatus(job, ApplicationStatus.Rejected);
+            }
         }
 
         public bool CanAdvanceTo(JobData job, ApplicationStatus target)
@@ -78,14 +90,47 @@ namespace Simulator_Game
             var status = GetStatus(job);
             return target switch
             {
-                ApplicationStatus.Pending   => status == ApplicationStatus.NotApplied,
-                ApplicationStatus.Interview => status == ApplicationStatus.Pending,
-                ApplicationStatus.Accepted  => status == ApplicationStatus.Pending
-                                              || status == ApplicationStatus.Interview,
-                ApplicationStatus.Rejected  => status == ApplicationStatus.Pending
-                                              || status == ApplicationStatus.Interview,
-                _                           => false,
+                ApplicationStatus.Pending      => status == ApplicationStatus.NotApplied,
+                ApplicationStatus.Interview    => status == ApplicationStatus.Pending,
+                ApplicationStatus.OfferReceived => status == ApplicationStatus.Pending
+                                               || status == ApplicationStatus.Interview,
+                ApplicationStatus.Accepted     => status == ApplicationStatus.OfferReceived,
+                ApplicationStatus.Rejected     => status == ApplicationStatus.Pending
+                                               || status == ApplicationStatus.Interview
+                                               || status == ApplicationStatus.OfferReceived,
+                _                              => false,
             };
+        }
+
+        // ── Player offer response ─────────────────────────────────────────────
+
+        /// <summary>
+        /// Player accepts an offer. Returns false if work hours overlap an existing job.
+        /// </summary>
+        public bool AcceptOffer(JobData job)
+        {
+            if (GetStatus(job) != ApplicationStatus.OfferReceived) return false;
+            if (HasWorkTimeConflict(job)) return false;
+            SetStatus(job, ApplicationStatus.Accepted);
+            return true;
+        }
+
+        /// <summary>
+        /// Player declines an offer. Blocks re-application until the next in-game day.
+        /// </summary>
+        public void RejectOffer(JobData job)
+        {
+            if (GetStatus(job) != ApplicationStatus.OfferReceived) return;
+            _rejectedDay[job] = GameTimeManager.Instance.CurrentDay;
+            SetStatus(job, ApplicationStatus.Rejected);
+        }
+
+        private bool HasWorkTimeConflict(JobData newJob)
+        {
+            foreach (var job in GetJobsWithStatus(ApplicationStatus.Accepted))
+                if (!(newJob.workStartHour >= job.workEndHour || newJob.workEndHour <= job.workStartHour))
+                    return true;
+            return false;
         }
 
         // ── Post-interview evaluation ─────────────────────────────────────────
@@ -107,9 +152,13 @@ namespace Simulator_Game
             if (GetStatus(job) != ApplicationStatus.Interview) yield break;
 
             float effectiveRate = Mathf.Clamp01(job.interviewPassRate + scoreModifier);
-            SetStatus(job, URandom.value <= effectiveRate
-                ? ApplicationStatus.Accepted
-                : ApplicationStatus.Rejected);
+            if (URandom.value <= effectiveRate)
+                SetStatus(job, ApplicationStatus.OfferReceived);
+            else
+            {
+                _rejectedDay[job] = GameTimeManager.Instance.CurrentDay;
+                SetStatus(job, ApplicationStatus.Rejected);
+            }
         }
 
         // ── The three game-driven transitions ─────────────────────────────────
@@ -119,14 +168,14 @@ namespace Simulator_Game
             => TryTransition(job, ApplicationStatus.Pending, ApplicationStatus.Interview,
                              job.interviewScreeningRate);
 
-        /// <summary>Pending → Accepted. Game-driven direct offer (skips interview).</summary>
+        /// <summary>Pending → OfferReceived. Game-driven direct offer (skips interview).</summary>
         public bool TryDirectOffer(JobData job)
-            => TryTransition(job, ApplicationStatus.Pending, ApplicationStatus.Accepted,
+            => TryTransition(job, ApplicationStatus.Pending, ApplicationStatus.OfferReceived,
                              job.directOfferRate);
 
-        /// <summary>Interview → Accepted. Game-driven after interview evaluation.</summary>
+        /// <summary>Interview → OfferReceived. Game-driven after interview evaluation.</summary>
         public bool TryPassInterview(JobData job)
-            => TryTransition(job, ApplicationStatus.Interview, ApplicationStatus.Accepted,
+            => TryTransition(job, ApplicationStatus.Interview, ApplicationStatus.OfferReceived,
                              job.interviewPassRate);
 
         // ── Internal ──────────────────────────────────────────────────────────

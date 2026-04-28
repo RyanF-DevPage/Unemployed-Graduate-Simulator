@@ -12,6 +12,10 @@ namespace Simulator_Game
         [SerializeField] private TMP_Text contentText;
         [SerializeField] private Button closeButton;
         [SerializeField] private Button startInterviewButton;
+        [SerializeField] private Button acceptOfferButton;
+        [SerializeField] private Button rejectOfferButton;
+        [SerializeField] private GameObject workConflictWarningPanel;
+        [SerializeField] private Button conflictWarningOkButton;
 
         private Email _currentEmail;
 
@@ -20,6 +24,12 @@ namespace Simulator_Game
             closeButton.onClick.AddListener(() => gameObject.SetActive(false));
             if (startInterviewButton != null)
                 startInterviewButton.onClick.AddListener(OnStartInterviewClicked);
+            if (acceptOfferButton != null)
+                acceptOfferButton.onClick.AddListener(OnAcceptOfferClicked);
+            if (rejectOfferButton != null)
+                rejectOfferButton.onClick.AddListener(OnRejectOfferClicked);
+            if (conflictWarningOkButton != null)
+                conflictWarningOkButton.onClick.AddListener(() => workConflictWarningPanel.SetActive(false));
         }
 
         public void Show(Email email)
@@ -34,6 +44,14 @@ namespace Simulator_Game
                 startInterviewButton.gameObject.SetActive(
                     email.relatedStatus == ApplicationStatus.Interview && email.job != null);
 
+            bool isActiveOffer = email.relatedStatus == ApplicationStatus.OfferReceived
+                && email.job != null
+                && ApplicationStateManager.Instance.GetStatus(email.job) == ApplicationStatus.OfferReceived;
+
+            if (acceptOfferButton != null) acceptOfferButton.gameObject.SetActive(isActiveOffer);
+            if (rejectOfferButton != null) rejectOfferButton.gameObject.SetActive(isActiveOffer);
+            if (workConflictWarningPanel != null) workConflictWarningPanel.SetActive(false);
+
             gameObject.SetActive(true);
         }
 
@@ -42,6 +60,22 @@ namespace Simulator_Game
             if (_currentEmail == null || _currentEmail.job == null) return;
             gameObject.SetActive(false);
             InterviewSession.Instance.StartInterview(_currentEmail.job);
+        }
+
+        private void OnAcceptOfferClicked()
+        {
+            if (_currentEmail?.job == null) return;
+            if (ApplicationStateManager.Instance.AcceptOffer(_currentEmail.job))
+                gameObject.SetActive(false);
+            else if (workConflictWarningPanel != null)
+                workConflictWarningPanel.SetActive(true);
+        }
+
+        private void OnRejectOfferClicked()
+        {
+            if (_currentEmail?.job == null) return;
+            ApplicationStateManager.Instance.RejectOffer(_currentEmail.job);
+            gameObject.SetActive(false);
         }
     }
 }
